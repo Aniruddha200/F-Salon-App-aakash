@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ftvapp/pages/cart_screen.dart';
@@ -5,9 +7,6 @@ import 'package:ftvapp/pages/login.dart';
 import 'package:ftvapp/pages/wishlist.dart';
 import 'package:ftvapp/services/auth.dart';
 import 'package:ftvapp/theme/color/light_color.dart';
-
-import 'avatar.dart';
-
 final FirebaseAuth _auth = FirebaseAuth.instance;
 getCurrentUser() async {
   final FirebaseUser user = await _auth.currentUser();
@@ -17,7 +16,6 @@ getCurrentUser() async {
   print(uid);
   //print(uemail);
 }
-
 getCurrentMail() async {
   final FirebaseUser user = await _auth.currentUser();
   //final uid = user.uid;
@@ -26,10 +24,9 @@ getCurrentMail() async {
   print(uemail);
   //print(uemail);
 }
-
 class Profile extends StatelessWidget {
   Profile({Key key}) : super(key: key);
-  AuthService authService = AuthService();
+  AuthService authService=AuthService();
   double width;
 
   Widget _header(BuildContext context) {
@@ -74,7 +71,10 @@ class Profile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     Center(
-                      child: ProfileAvatar(),
+                      child: CircleAvatar(
+                          maxRadius: 50,
+                          backgroundColor: Colors.white,
+                          backgroundImage: AssetImage("N")),
                     ),
                     SizedBox(height: 20),
                     Center(
@@ -84,7 +84,7 @@ class Profile extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              "Hello, " + getCurrentUser().toString(),
+                              "Hello, "+getCurrentUser().toString(),
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 27,
@@ -92,7 +92,7 @@ class Profile extends StatelessWidget {
                             ),
                             SizedBox(height: 5),
                             Text(
-                              "" + getCurrentMail().toString(),
+                              ""+getCurrentMail().toString(),
                               style: TextStyle(
                                   color: Colors.white70,
                                   fontSize: 17,
@@ -131,53 +131,51 @@ class Profile extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
           child: Container(
-        child: Column(
-          children: <Widget>[
-            _header(context),
-            SizedBox(height: 20),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => CartScreen()));
-              },
-              child: Container(
-                width: 350,
-                height: 70,
-                child: Card(
-                  elevation: 3,
-                  child: const ListTile(
-                    leading: Icon(Icons.reorder, size: 30),
-                    title: Text('My Cart',
-                        style: TextStyle(
-                          fontSize: 20,
-                        )),
+            child: Column(
+              children: <Widget>[
+                _header(context),
+                SizedBox(height: 20),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => CartScreen()));
+                  },
+                  child: Container(
+                    width: 350,
+                    height: 70,
+                    child: Card(
+                      elevation: 3,
+                      child: const ListTile(
+                        leading: Icon(Icons.reorder, size: 30),
+                        title: Text('My Cart',
+                            style: TextStyle(
+                              fontSize: 20,
+                            )),
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => Wishlist()));
-              },
-              child: Container(
-                width: 350,
-                height: 70,
-                child: Card(
-                  elevation: 3,
-                  child: const ListTile(
-                    leading: Icon(Icons.reorder, size: 30),
-                    title: Text('Wishlist',
-                        style: TextStyle(
-                          fontSize: 20,
-                        )),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => Wishlist()));
+                  },
+                  child: Container(
+                    width: 350,
+                    height: 70,
+                    child: Card(
+                      elevation: 3,
+                      child: const ListTile(
+                        leading: Icon(Icons.reorder, size: 30),
+                        title: Text('Wishlist',
+                            style: TextStyle(
+                              fontSize: 20,
+                            )),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
-      )),
+          )),
       bottomNavigationBar: Container(
         color: Colors.white,
         child: Row(
@@ -186,23 +184,23 @@ class Profile extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(80, 10, 80, 10),
-                child: MaterialButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => Login()));
-                  },
-                  child: Text("LOGOUT",
-                      style: TextStyle(color: Colors.white, fontSize: 18)),
+                child: MaterialButton(onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => Login()));
+                },
+                  child: Text("LOGOUT", style: TextStyle(color: Colors.white, fontSize: 18)),
                   shape: RoundedRectangleBorder(
                       borderRadius: new BorderRadius.circular(20.0)),
                   color: LightColor.black,
                   textColor: Colors.white,
                 ),
               ),
+
             ),
           ],
         ),
+
       ),
+
     );
   }
 }
